@@ -128,6 +128,45 @@
         <p style="margin-top:15px; border-top: 1px solid #3c4043; pt-10px;">
             ${person.motto}
         </p>
-    </script>};
+    </script>};/* 卡片整体样式 (模仿图片) */
+.member-card {
+    display: flex;
+    align-items: center;
+    background: #e1f5fe; /* 浅蓝色背景，图片同款 */
+    border: 1px solid #0277bd;
+    border-radius: 8px;
+    padding: 10px;
+    width: 280px; /* 卡片固定宽度 */
+    position: relative; /* 为连线和黄色按钮做准备 */
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+/* 名字和信息区域 */
+.member-info {
+    flex: 1;
+    margin-left: 10px;
+    text-align: left;
+    color: #333;
+}
+.name { font-weight: bold; font-size: 16px; }
+.meta { font-size: 12px; color: #666; }
+
+/* 底部按钮区域 */
+.card-actions {
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+    font-size: 11px;
+    color: #0277bd;
+}
+
+/* 父母层级的连接线逻辑 (示例) */
+.parent-connector {
+    height: 1px;
+    background: black;
+    position: absolute;
+    top: 50%; /* 连线在卡片中间 */
+    /* 需要复杂的 JavaScript 来动态计算位置 */
+}
 </body>
 </html>
