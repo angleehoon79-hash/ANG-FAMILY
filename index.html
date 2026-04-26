@@ -3,156 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANG-FAMILY | 智慧守护者 V9.0</title>
+    <title>ANG-FAMILY | 终极全能中心 V10.0</title>
     <style>
+        /* 动态主题变量 */
         :root {
-            --primary: #1a73e8; --success: #1e8e3e; --bg: #f8f9fa;
-            --card: #ffffff; --text-main: #202124; --border: #dadce0; --gold: #f9ab00;
+            --primary: #1a73e8; --success: #1e8e3e; --gold: #f9ab00;
+            --bg: #f8f9fa; --card: #ffffff; --text: #202124; --border: #dadce0;
         }
 
-        body, html { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text-main); }
+        /* 自动夜间模式 (19:00 - 07:00) */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #121212; --card: #1e1e1e; --text: #e8eaed; --border: #3c4043;
+            }
+        }
 
-        /* 登录样式 */
-        .login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #fff; }
-        .login-card { padding: 40px; border-radius: 24px; border: 1px solid var(--border); width: 300px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .login-btn { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 50px; cursor: pointer; margin-top: 15px; }
+        body, html { margin: 0; padding: 0; font-family: 'SF Pro', system-ui, sans-serif; background: var(--bg); color: var(--text); transition: 0.5s; }
 
-        /* 面板布局 */
-        #mainPanel { display: none; padding: 20px; max-width: 1200px; margin: 0 auto; position: relative; }
+        /* 布局网格 */
+        #mainPanel { padding: 25px; max-width: 1200px; margin: 0 auto; }
         .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .card { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid var(--border); transition: 0.3s; }
-        h3 { color: var(--primary); font-size: 14px; margin: 0 0 15px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+        .card { background: var(--card); border-radius: 24px; padding: 22px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        h3 { color: var(--primary); font-size: 14px; margin: 0 0 15px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
 
-        /* --- 智慧猫头鹰 AI 宠物样式 --- */
-        .ai-pet-container {
-            position: fixed; bottom: 30px; right: 30px;
-            background: white; border: 1px solid var(--border);
-            padding: 15px; border-radius: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            display: flex; flex-direction: column; align-items: center; z-index: 100; width: 130px;
-        }
-        .pet-avatar { 
-            font-size: 45px; cursor: pointer;
-            transition: 0.3s; animation: float 3s ease-in-out infinite; 
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-        .pet-bubble { 
-            background: #f1f3f4; font-size: 11px; padding: 6px 12px; 
-            border-radius: 12px; margin-top: 10px; text-align: center; color: var(--text-main);
-            position: relative; border: 1px solid #eee;
-        }
+        /* --- 5K 动态课表 --- */
+        .schedule-list { font-size: 13px; line-height: 1.8; }
+        .current-day { color: var(--primary); font-weight: bold; background: rgba(26,115,232,0.1); padding: 5px 10px; border-radius: 8px; }
 
-        /* 积分板 */
-        .score-val { font-size: 48px; font-weight: bold; color: var(--gold); text-align: center; }
-        .btn-add { background: #e8f0fe; color: var(--primary); border: none; padding: 10px; border-radius: 10px; cursor: pointer; width: 100%; margin-top: 10px; font-weight: bold; }
+        /* --- AI 猫头鹰进化版 --- */
+        .ai-pet-box {
+            position: fixed; bottom: 30px; right: 30px; background: var(--card);
+            border: 1px solid var(--border); padding: 15px; border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 140px; text-align: center; z-index: 100;
+        }
+        .pet-face { font-size: 50px; cursor: pointer; animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        .pet-msg { font-size: 11px; margin-top: 10px; background: var(--bg); padding: 8px; border-radius: 12px; }
 
-        /* 设备与实验 */
-        .device { background: #f8f9fa; padding: 8px; border-radius: 8px; font-size: 12px; margin-bottom: 5px; display: flex; justify-content: space-between; }
-        .dot { width: 6px; height: 6px; background: var(--success); border-radius: 50%; display: inline-block; }
+        /* 积分与实验 */
+        .big-num { font-size: 40px; font-weight: bold; text-align: center; margin: 10px 0; color: var(--gold); }
+        .device { background: var(--bg); padding: 10px; border-radius: 12px; margin-bottom: 8px; font-size: 12px; display: flex; justify-content: space-between; border: 1px solid var(--border); }
+        .dot { width: 7px; height: 7px; background: var(--success); border-radius: 50%; box-shadow: 0 0 5px var(--success); }
+
+        .btn-action { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: 600; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div id="loginSection" class="login-screen">
-        <div class="login-card">
-            <h2 style="color:var(--primary); margin:0;">ANG-FAMILY</h2>
-            <span style="font-size:10px; color:var(--success);">🔒 HTTPS 智慧盾牌已开启</span>
-            <input type="text" id="username" placeholder="管理员姓名" style="width:100%; padding:10px; margin-top:20px; border-radius:10px; border:1px solid #ddd;">
-            <input type="password" id="password" placeholder="密钥" style="width:100%; padding:10px; margin-top:10px; border-radius:10px; border:1px solid #ddd;">
-            <button class="login-btn" onclick="login()">激活猫头鹰守护者</button>
-        </div>
-    </div>
-
     <div id="mainPanel">
-        <div class="ai-pet-container">
-            <div class="pet-avatar" id="petFace" onclick="petWink()">🦉</div>
-            <div class="pet-bubble" id="petTalk">Hoot! 系统正常运行中。</div>
+        <div class="ai-pet-box">
+            <div class="pet-face" id="owl" onclick="petInteraction()">🦉</div>
+            <div class="pet-msg" id="owlTalk">Hoot! 佳骏管理员，系统已加密。</div>
         </div>
 
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="margin:0;">ANG<span style="color:var(--primary);">::SmartGate</span></h2>
-            <div style="font-size:12px; color:var(--text-sub);">Parit Buntar 实时监测</div>
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:30px;">
+            <div>
+                <h1 style="margin:0; font-size: 26px; font-weight: 600;">ANG<span style="color:var(--primary);">::OS</span></h1>
+                <div id="dateDisplay" style="font-size:12px; color:var(--success); font-weight: 500;"></div>
+            </div>
+            <div style="font-size:11px; color:var(--text); opacity:0.6;">巴里文打 (Parit Buntar) 监测站</div>
         </div>
 
         <div class="dashboard-grid">
             <div class="card">
-                <h3>🏆 积分银行 | Points</h3>
-                <div class="score-val" id="scoreVal">0</div>
-                <button class="btn-add" onclick="addScore(20)">+20 奖励积分</button>
-            </div>
-
-            <div class="card">
-                <h3>🎮 Minecraft 竞赛 | 5K</h3>
-                <div style="font-size:11px;">基地建设进度: 85%</div>
-                <div style="height:6px; background:#f1f3f4; border-radius:3px; margin:5px 0;"><div style="width:85%; height:100%; background:var(--primary);"></div></div>
-            </div>
-
-            <div class="card">
-                <h3>📱 网络监测 | 5G Hub</h3>
-                <div class="device"><span>Honor Magic 5</span> <span><span class="dot"></span>加密连接</span></div>
-                <div class="device"><span>Realme X SuperZoom</span> <span><span class="dot"></span>主控在线</span></div>
-            </div>
-
-            <div class="card">
-                <h3>🌱 绿豆实验室 | Lab</h3>
-                <div style="text-align:center;">
-                    <div style="font-size:32px; color:var(--success); font-weight:bold;">1000<small style="font-size:14px;">mm</small></div>
-                    <p style="font-size:10px; color:#888;">最高生长记录保持中</p>
+                <h3>📅 5K 班动态课表 | Timetable</h3>
+                <div class="schedule-list" id="timetable">
+                    <div id="dayStatus">正在识别日期...</div>
+                    <ul id="subjects" style="padding-left: 20px; margin: 10px 0;">
+                        </ul>
                 </div>
+            </div>
+
+            <div class="card">
+                <h3>🏆 家族积分 | Score Bank</h3>
+                <div class="big-num" id="scoreVal">0</div>
+                <button class="btn-action" onclick="addScore(50)">+50 奖励积分</button>
+            </div>
+
+            <div class="card">
+                <h3>📱 硬件监控 | 5G Hub</h3>
+                <div class="device"><span>Honor Magic 5 (爸爸)</span> <span><span class="dot"></span> 5G</span></div>
+                <div class="device"><span>Realme X SuperZoom</span> <span><span class="dot"></span> Online</span></div>
+                <div class="device"><span>Samsung Buds FE</span> <span style="opacity:0.5;">Standby</span></div>
+            </div>
+
+            <div class="card">
+                <h3>🌱 绿豆生长日志 | Lab</h3>
+                <div class="big-num" style="color:var(--success);">1000<small style="font-size:16px;">mm</small></div>
+                <div style="font-size:11px; text-align:center; opacity:0.8;">生长曲线：稳定向上 | 准备移栽</div>
             </div>
         </div>
     </div>
 
     <script>
         let score = 0;
-        const messages = [
-            "Hoot! 佳骏，5G 网络非常稳定。",
-            "我正在盯着那颗 1000mm 的绿豆！",
-            "Minecraft 比赛准备好了吗？",
-            "记得点击我，我会眨眼哦！",
-            "HTTPS 环境安全，无威胁发现。"
-        ];
+        const owl = document.getElementById('owl');
+        const owlTalk = document.getElementById('owlTalk');
 
-        function login() {
-            const u = document.getElementById('username').value.trim();
-            const p = document.getElementById('password').value;
-            const users = { "佳骏": "0526", "爸爸": "8888", "妈妈": "1234" };
+        // 1. 初始化日期与课表
+        function initSystem() {
+            const now = new Date();
+            const days = ["星期日 (Sunday)", "星期一 (Monday)", "星期二 (Tuesday)", "星期三 (Wednesday)", "星期四 (Thursday)", "星期五 (Friday)", "星期六 (Saturday)"];
+            const dayIdx = now.getDay();
+            
+            document.getElementById('dateDisplay').innerText = "🔒 HTTPS SECURE | " + days[dayIdx];
+            
+            const dayStatus = document.getElementById('dayStatus');
+            const subjects = document.getElementById('subjects');
 
-            if (users[u] && users[u] === p) {
-                document.getElementById('loginSection').style.display = 'none';
-                document.getElementById('mainPanel').style.display = 'block';
-                setInterval(autoTalk, 6000);
+            if (dayIdx === 0 || dayIdx === 6) {
+                dayStatus.innerHTML = "<span class='current-day'>周末愉快！</span>";
+                subjects.innerHTML = "<li>准备下周 5K 班课本</li><li>复习 Minecraft 竞赛逻辑</li>";
+                owlTalk.innerText = "Hoot! 周末是休息和玩 Minecraft 的好时间！";
             } else {
-                alert("密钥错误，猫头鹰拒绝访问！");
+                dayStatus.innerHTML = "<span class='current-day'>今日课程进行中</span>";
+                subjects.innerHTML = "<li>RBT (设计与工艺)</li><li>科学 (Mung Bean)</li><li>华文作文</li>";
+                owlTalk.innerText = "佳骏，记得检查你的 5K 班作业哦！";
             }
         }
 
-        function autoTalk() {
-            const msg = messages[Math.floor(Math.random() * messages.length)];
-            document.getElementById('petTalk').innerText = msg;
-        }
-
+        // 2. 积分逻辑
         function addScore(p) {
             score += p;
             document.getElementById('scoreVal').innerText = score;
-            document.getElementById('petFace').innerText = "🤩";
-            document.getElementById('petTalk').innerText = "太棒了！积分到账！";
-            setTimeout(() => {
-                document.getElementById('petFace').innerText = "🦉";
-                document.getElementById('petTalk').innerText = "Hoot! 继续保持！";
-            }, 1500);
+            owl.innerText = "🤩";
+            owlTalk.innerText = "太棒了！积分增加了 " + p + "！";
+            setTimeout(() => { owl.innerText = "🦉"; }, 1500);
         }
 
-        // 点击宠物眨眼
-        function petWink() {
-            document.getElementById('petFace').innerText = "😉";
-            document.getElementById('petTalk').innerText = "嘿！管理员好！";
-            setTimeout(() => {
-                document.getElementById('petFace').innerText = "🦉";
-            }, 800);
+        // 3. 猫头鹰互动
+        function petInteraction() {
+            const faces = ["😉", "😎", "🦉", "🤔"];
+            const msgs = ["5G 信号满格！", "绿豆还在长高吗？", "我是你的智慧守护者。", "今天的心情是 100 分！"];
+            const rand = Math.floor(Math.random() * faces.length);
+            owl.innerText = faces[rand];
+            owlTalk.innerText = msgs[rand];
+            setTimeout(() => { owl.innerText = "🦉"; }, 2000);
         }
+
+        // 自动运行
+        initSystem();
     </script>
 </body>
 </html>
