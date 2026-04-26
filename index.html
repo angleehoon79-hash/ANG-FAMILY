@@ -82,9 +82,22 @@
 
     <script>
         const familyData = {
-            "佳骏": "🏆 5K 班管理员。当前任务：维护 ANG-FAMILY 网站、整理 Minecraft 竞赛资料。",
-            "爸爸": "📱 技术顾问。负责 Honor/Realme 设备安全维护，家庭网络防火墙管理。",
-            "妈妈": "🏠 生活总管。管理家庭重要日程与绿豆实验每日观察记录。"
+    "佳骏": {
+        age: 11, // 5年级大约11岁
+        job: "5K班学生 / 系统管理员",
+        motto: "🏆 正在准备 Minecraft 教育版竞赛，负责维护家庭 HTTPS 网站。"
+    },
+    "爸爸": {
+        age: 40, // 示例年龄，你可以修改
+        job: "技术顾问 / 工程师",
+        motto: "📱 负责 Honor 与 Realme 设备维护，监控家庭网络安全。"
+    },
+    "妈妈": {
+        age: 38, // 示例年龄，你可以修改
+        job: "家庭财务主管 / 绿豆实验导师",
+        motto: "🏠 记录家庭重要日程，观察绿豆发芽实验。"
+    }
+};
         };
 
         function login() {
@@ -97,15 +110,24 @@
                 document.getElementById('familyTree').style.display = 'block';
                 document.getElementById('currentUser').innerText = u;
             } else {
-                alert("请输入正确的佳骏账号和密码来解锁家族树。");
+                alert("请输入正确的佳骏账号名称和密码：0526来解锁家族树。");
             }
         }
 
         function showInfo(name) {
-            document.getElementById('detailPanel').style.display = 'block';
-            document.getElementById('panelName').innerText = name + " 的个人档案";
-            document.getElementById('panelData').innerText = familyData[name];
-        }
-    </script>
+    const person = familyData[name];
+    document.getElementById('detailPanel').style.display = 'block';
+    
+    // 组合 HTML 字符串
+    document.getElementById('panelName').innerText = name;
+    document.getElementById('panelData').innerHTML = `
+        <div style="margin-top:10px;">
+            <span class="badge">年龄: ${person.age} 岁</span>
+            <span class="badge">职位: ${person.job}</span>
+        </div>
+        <p style="margin-top:15px; border-top: 1px solid #3c4043; pt-10px;">
+            ${person.motto}
+        </p>
+    </script>};
 </body>
 </html>
