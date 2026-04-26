@@ -3,107 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANG-FAMILY | 极简白控制中心</title>
+    <title>ANG-FAMILY | 极简白 AI 控制中心</title>
     <style>
-        /* 核心极简白变量 */
+        /* 核心视觉变量 */
         :root {
-            --gemini-blue: #1a73e8;
-            --gemini-purple: #a142f4;
-            --ai-bg: #f8f9fa; /* 珍珠白背景 */
-            --glass: rgba(255, 255, 255, 0.7);
-            --card-shadow: 0 8px 32px rgba(31, 38, 135, 0.07);
+            --primary: #1a73e8; /* 科技蓝 */
+            --success: #1e8e3e; /* 安全绿 */
+            --bg: #f8f9fa;      /* 珍珠白背景 */
+            --card: #ffffff;
             --text-main: #202124;
             --text-sub: #5f6368;
+            --border: #dadce0;
         }
 
         body, html {
             margin: 0; padding: 0;
-            font-family: 'Google Sans', 'SF Pro Display', system-ui, sans-serif;
-            background-color: var(--ai-bg);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg);
             color: var(--text-main);
             min-height: 100vh;
         }
 
-        /* 登录页面 - 极简白风格 */
+        /* 登录模块 - 干净、专业 */
         .login-screen {
             display: flex; align-items: center; justify-content: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #f1f3f4 100%);
         }
 
         .login-card {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            padding: 50px 40px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            width: 100%; max-width: 340px;
+            background: var(--card);
+            padding: 45px 35px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            width: 100%; max-width: 320px;
             text-align: center;
-            box-shadow: var(--card-shadow);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
         h1 {
-            font-size: 34px; font-weight: 600;
-            background: linear-gradient(135deg, var(--gemini-blue), var(--gemini-purple));
+            font-size: 30px; font-weight: 600; margin: 0;
+            background: linear-gradient(to right, var(--primary), #a142f4);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin: 0;
         }
 
-        .ssl-tag { color: #1e8e3e; font-size: 11px; margin-bottom: 30px; display: block; font-weight: 500; }
+        .ssl-tag { color: var(--success); font-size: 11px; margin: 10px 0 30px; display: block; font-weight: 500; }
 
         input {
-            width: 100%; padding: 16px; margin: 12px 0;
-            border-radius: 12px; border: 1px solid #dadce0;
-            background: #fff; color: var(--text-main);
-            box-sizing: border-box; transition: 0.3s;
+            width: 100%; padding: 14px; margin: 10px 0;
+            border-radius: 12px; border: 1px solid var(--border);
+            background: #fff; box-sizing: border-box; transition: 0.3s;
         }
-        input:focus { border-color: var(--gemini-blue); outline: none; box-shadow: 0 0 8px rgba(26, 115, 232, 0.2); }
+        input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1); }
 
         .login-btn {
-            width: 100%; padding: 16px;
-            background: var(--gemini-blue); color: white;
+            width: 100%; padding: 14px;
+            background: var(--primary); color: white;
             border: none; border-radius: 50px;
-            cursor: pointer; font-weight: bold; margin-top: 25px;
-            transition: 0.3s;
+            cursor: pointer; font-weight: bold; margin-top: 20px;
         }
-        .login-btn:hover { background: #1765cc; transform: translateY(-1px); }
 
-        /* 内部控制台 */
-        #mainConsole { display: none; padding: 40px 20px; max-width: 1100px; margin: 0 auto; }
+        /* 内部管理面板 */
+        #mainPanel { display: none; padding: 30px 20px; max-width: 1100px; margin: 0 auto; }
 
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-        .logout-btn { background: #fff; color: #d93025; border: 1px solid #dadce0; padding: 8px 18px; border-radius: 20px; cursor: pointer; font-size: 12px; }
-
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
-
-        .widget {
-            background: #ffffff;
-            border-radius: 24px; padding: 25px;
-            border: 1px solid #e8eaed;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            transition: 0.3s;
+        /* 顶部状态栏 */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .logout-btn { 
+            background: #fff; color: #d93025; border: 1px solid var(--border); 
+            padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 12px;
+            display: flex; align-items: center; gap: 5px;
         }
-        .widget:hover { box-shadow: 0 10px 20px rgba(0,0,0,0.05); transform: translateY(-2px); }
 
-        h3 { color: var(--gemini-blue); font-weight: 500; font-size: 18px; margin-top: 0; padding-bottom: 15px; border-bottom: 1px solid #f1f3f4; }
+        /* 网格卡片系统 */
+        .dashboard-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+            gap: 20px; 
+        }
 
-        /* 家族简图 */
-        .family-row { display: flex; justify-content: space-around; margin-top: 20px; }
-        .node { text-align: center; }
-        .node .avatar { font-size: 32px; background: #f8f9fa; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; border: 1px solid #e8eaed; }
-        .node.active .avatar { border-color: var(--gemini-blue); background: #e8f0fe; }
+        .card {
+            background: var(--card); border-radius: 20px; padding: 25px;
+            border: 1px solid var(--border); box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
 
-        /* 进度条 */
-        .progress-bar { height: 8px; background: #f1f3f4; border-radius: 4px; overflow: hidden; margin: 12px 0; }
-        .progress-fill { height: 100%; background: var(--gemini-blue); border-radius: 4px; width: 0; transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        h3 { color: var(--primary); font-size: 16px; margin: 0 0 20px; font-weight: 500; border-bottom: 1px solid #f1f3f4; padding-bottom: 10px; }
 
-        /* 设备监控 */
-        .device-card { background: #f8f9fa; padding: 12px 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; border: 1px solid #eee; }
-        .status-dot { width: 8px; height: 8px; background: #1e8e3e; border-radius: 50%; display: inline-block; margin-right: 8px; }
+        /* 家族树简易展示 (像图片一样对齐) */
+        .family-row { display: flex; justify-content: space-around; align-items: center; }
+        .member { text-align: center; }
+        .avatar { 
+            font-size: 28px; background: #f8f9fa; width: 60px; height: 60px; 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            border: 1px solid var(--border); margin-bottom: 8px;
+        }
+        .active-member .avatar { border-color: var(--primary); background: #e8f0fe; box-shadow: 0 0 10px rgba(26,115,232,0.1); }
 
-        /* 绿豆实验数据 */
-        .bean-value { font-size: 54px; font-weight: 600; color: #1e8e3e; text-align: center; margin: 10px 0; }
+        /* 进度条样式 */
+        .stat-label { font-size: 12px; color: var(--text-sub); display: flex; justify-content: space-between; margin-bottom: 5px; }
+        .progress-bg { height: 8px; background: #f1f3f4; border-radius: 4px; overflow: hidden; margin-bottom: 15px; }
+        .progress-bar { height: 100%; background: var(--primary); border-radius: 4px; transition: width 1s ease-in-out; }
+
+        /* 设备监控列表 */
+        .device {
+            background: #f8f9fa; padding: 12px; border-radius: 10px;
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 8px; font-size: 13px; border: 1px solid #eee;
+        }
+        .dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; margin-right: 6px; display: inline-block; }
+
+        /* 绿豆实验 */
+        .lab-data { text-align: center; }
+        .height-val { font-size: 48px; font-weight: 700; color: var(--success); }
     </style>
 </head>
 <body>
@@ -111,66 +122,74 @@
     <div id="loginSection" class="login-screen">
         <div class="login-card">
             <h1>ANG-FAMILY</h1>
-            <span class="ssl-tag">🔒 HTTPS 端到端加密连接</span>
-            <input type="text" id="username" placeholder="管理员姓名">
-            <input type="password" id="password" placeholder="访问密钥">
-            <button class="login-btn" onclick="appLogin()">验证身份 | Authenticate</button>
-            <p id="err" style="color: #d93025; font-size: 12px; margin-top: 15px;"></p>
+            <span class="ssl-tag">🔒 HTTPS Secure Identity Check</span>
+            <input type="text" id="username" placeholder="Name | 成员姓名">
+            <input type="password" id="password" placeholder="Key | 访问密钥">
+            <button class="login-btn" onclick="login()">Enter System | 进入系统</button>
+            <p id="err" style="color: #d93025; font-size: 11px; margin-top: 15px;"></p>
         </div>
     </div>
 
-    <div id="mainConsole">
+    <div id="mainPanel">
         <div class="header">
             <div>
-                <h2 style="margin:0; font-weight: 500;">ANG-FAMILY<span style="color:var(--gemini-blue);">::System</span></h2>
-                <span style="font-size:12px; color:var(--text-sub);">智能家庭治理系统 | Grade 5K</span>
+                <h2 style="margin:0; font-weight: 500;">Admin<span style="color:var(--primary);">::Dashboard</span></h2>
+                <span style="font-size:11px; color:var(--text-sub);">Grade 5K Intelligent Governance | Parit Buntar</span>
             </div>
-            <button class="logout-btn" onclick="location.reload()">退出系统 | Logout</button>
+            <button class="logout-btn" onclick="location.reload()">🚪 Logout | 退出</button>
         </div>
 
-        <div class="grid-container">
-            <div class="widget">
-                <h3>👨‍👩‍👦 家族成员 | Family</h3>
+        <div class="dashboard-grid">
+            <div class="card">
+                <h3>👨‍👩‍👦 家族网络 | Family Neural</h3>
                 <div class="family-row">
-                    <div class="node"><div class="avatar">👨</div><div style="font-size:12px;margin-top:8px;">爸爸</div></div>
-                    <div class="node"><div class="avatar">👩</div><div style="font-size:12px;margin-top:8px;">妈妈</div></div>
-                    <div class="node active"><div class="avatar">👦</div><div style="font-size:12px;margin-top:8px;font-weight:bold;">佳骏</div></div>
+                    <div class="member"><div class="avatar">👨</div><div style="font-size:11px;">爸爸</div></div>
+                    <div class="member"><div class="avatar">👩</div><div style="font-size:11px;">妈妈</div></div>
+                    <div class="member active-member"><div class="avatar">👦</div><div style="font-size:11px; font-weight: bold;">佳骏</div></div>
                 </div>
             </div>
 
-            <div class="widget">
+            <div class="card">
                 <h3>🎮 Minecraft 竞赛 | Contest</h3>
-                <p style="font-size: 12px; color: var(--text-sub);">地图建设进度: 85%</p>
-                <div class="progress-bar"><div class="progress-fill" style="width: 85%;"></div></div>
-                <p style="font-size: 12px; color: var(--text-sub);">命令方块逻辑: 70%</p>
-                <div class="progress-bar"><div class="progress-fill" style="width: 70%;"></div></div>
+                <div class="stat-label"><span>地图进度 (Map Progress)</span> <span>85%</span></div>
+                <div class="progress-bg"><div class="progress-bar" style="width: 85%;"></div></div>
+                <div class="stat-label"><span>脚本逻辑 (Scripting)</span> <span>70%</span></div>
+                <div class="progress-bg"><div class="progress-bar" style="width: 70%;"></div></div>
             </div>
 
-            <div class="widget">
-                <h3>📱 设备监控 | Devices</h3>
-                <div class="device-card"><span>Honor Magic 5 (爸爸)</span> <span><span class="status-dot"></span>5G Active</span></div>
-                <div class="device-card"><span>Realme X SuperZoom (佳骏)</span> <span><span class="status-dot"></span>5G Active</span></div>
+            <div class="card">
+                <h3>📱 设备监控 | Network</h3>
+                <div class="device"><span>Honor Magic 5 (Father)</span> <span><span class="dot"></span>5G Active</span></div>
+                <div class="device"><span>Realme X SuperZoom (Admin)</span> <span><span class="dot"></span>5G Active</span></div>
             </div>
 
-            <div class="widget">
-                <h3>🌱 绿豆实验室 | Lab</h3>
-                <div class="bean-value">1000<small style="font-size:18px;">mm</small></div>
-                <p style="font-size: 12px; line-height: 1.6; color: var(--text-sub); text-align: center;">实验记录：5K 班 mung bean 已经达到移栽高度。建议在 HTTPS 安全环境下持续监测生长数据。</p>
+            <div class="card">
+                <h3>🌱 绿豆实验 | Lab Data</h3>
+                <div class="lab-data">
+                    <div class="height-val">1000<small style="font-size:16px; font-weight: 400;">mm</small></div>
+                    <p style="font-size:12px; color:var(--text-sub);">Mung Bean Max Height Record</p>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        function appLogin() {
+        function login() {
             const u = document.getElementById('username').value.trim();
             const p = document.getElementById('password').value;
-            const db = { "佳骏": "0526", "爸爸": "8888", "妈妈": "1234" };
+            
+            // 管理员账号数据库
+            const users = {
+                "佳骏": "0526",
+                "爸爸": "8888",
+                "妈妈": "1234"
+            };
 
-            if (db[u] && db[u] === p) {
+            if (users[u] && users[u] === p) {
                 document.getElementById('loginSection').style.display = 'none';
-                document.getElementById('mainConsole').style.display = 'block';
+                document.getElementById('mainPanel').style.display = 'block';
             } else {
-                document.getElementById('err').innerText = "❌ 访问拒绝，请核对密钥。";
+                document.getElementById('err').innerText = "❌ Verification Failed / 密钥验证失败";
             }
         }
     </script>
