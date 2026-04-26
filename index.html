@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANG-FAMILY | 洪家加密系统</title>
+    <style>
+        :root { --primary: #00d2ff; --secondary: #3a7bd5; --dark: #0f172a; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--dark); color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; overflow: hidden; }
+        .container { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(15px); padding: 40px; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.1); width: 100%; max-width: 360px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+        h1 { font-size: 32px; letter-spacing: 2px; background: linear-gradient(to right, #00d2ff, #92fe9d); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 5px; }
+        .ssl-tag { font-size: 10px; color: #4ade80; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 25px; display: block; }
+        input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(15, 23, 42, 0.6); color: white; box-sizing: border-box; transition: 0.3s; }
+        input:focus { border-color: var(--primary); background: rgba(15, 23, 42, 0.9); outline: none; }
+        button { width: 100%; padding: 14px; background: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; margin-top: 15px; box-shadow: 0 4px 15px rgba(58, 123, 213, 0.4); }
+        button:hover { opacity: 0.9; transform: translateY(-1px); }
+        #dashboard { display: none; }
+        .info-panel { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; margin-top: 20px; text-align: left; border-left: 4px solid var(--primary); }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="loginBox">
+        <h1>ANG-FAMILY</h1>
+        <span class="ssl-tag">🔒 端到端 HTTPS 加密已就绪</span>
+        <input type="text" id="username" placeholder="请输入成员姓名">
+        <input type="password" id="password" placeholder="请输入安全密钥">
+        <button onclick="checkAuth()">安全进入系统</button>
+        <p id="error" style="color: #fb7185; font-size: 13px; margin-top: 15px; height: 10px;"></p>
+    </div>
+
+    <div class="container" id="dashboard">
+        <h2 id="userTitle" style="color: #4ade80;"></h2>
+        <div class="info-panel" id="userData"></div>
+        <button onclick="location.reload()" style="background: #334155; margin-top: 30px;">锁定系统并退出</button>
+    </div>
+
+    <script>
+        function checkAuth() {
+            const u = document.getElementById('username').value.trim();
+            const p = document.getElementById('password').value;
+            const err = document.getElementById('error');
+
+            // 洪家成员数据库
+            const db = {
+                "佳骏": { key: "0526", data: "🛠️ 管理员权限已激活。<br>· 5K 班课表已同步。<br>· Minecraft 教育版竞赛地图备份成功。" },
+                "爸爸": { key: "8888", data: "📱 欢迎。家中的 Honor/Realme 设备连接正常。<br>· 网络安全防火墙：运行中。<br>· 智能家居状态：在线。" },
+                "妈妈": { key: "1234", data: "🏠 欢迎。今日家庭提醒：<br>· 绿豆发芽实验记录已保存。<br>· RBT 太阳能灯项目耗材已备齐。" }
+            };
+
+            if (db[u] && db[u].key === p) {
+                document.getElementById('loginBox').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                document.getElementById('userTitle').innerText = "你好，" + u;
+                document.getElementById('userData').innerHTML = db[u].data;
+            } else {
+                err.innerText = "⚠️ 身份识别错误";
+            }
+        }
+    </script>
+</body>
+</html>
