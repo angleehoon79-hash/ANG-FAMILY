@@ -5,102 +5,200 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ANG-FAMILY | 家族树系统</title>
     <style>
-        /* 全局样式 - 保持专业且简洁 */
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f0f2f5; margin: 0; }
-       
-        /* 登录模块 - AI 风格渐变 */
-        .login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #1e3a8a 0%, #06b6d4 100%); color: white; text-align: center; }
-        .login-card { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 40px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
-        h1 { background: linear-gradient(to right, #ffffff, #88e0ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 36px; margin-bottom: 5px; }
-        .ssl-tag { font-size: 11px; color: #4ade80; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); color: white; box-sizing: border-box; }
-        input:focus { border-color: #8ab4f8; outline: none; }
-        .login-btn { width: 100%; padding: 12px; background: #3b82f6; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 15px; }
-       
-        /* 家族树模块 (模仿图片风格) */
-        #familyTreeSection { display: none; padding: 40px 10%; text-align: center; }
-        .dashboard-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 20px; }
-        
-        /* 核心布局：Family Tree Layout (CSS Grid/Flex) */
-        .tree-container { margin-top: 40px; position: relative; }
-        
-        /* 每一层 (Level) 的通用容器 */
-        .tree-level { display: flex; justify-content: center; gap: 40px; margin-bottom: 60px; position: relative; }
-        
-        /* 卡片 (模仿图片布局) */
+        /* 核心变量与背景 - 模仿 Gemini 科技感 */
+        :root {
+            --gemini-blue: #4285f4;
+            --gemini-bg: #0b0d0e;
+            --card-blue: #e1f5fe;
+            --card-border: #0277bd;
+            --text-dark: #1e3a8a;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--gemini-bg);
+            color: #e8eaed;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* 登录页面样式 */
+        .login-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: radial-gradient(circle at center, #1e3a8a 0%, #0b0d0e 100%);
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: 340px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 32px;
+            background: linear-gradient(135deg, #4285f4, #9b72cb, #d96570);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .ssl-tag {
+            font-size: 11px;
+            color: #4ade80;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border-radius: 12px;
+            border: 1px solid #3c4043;
+            background: #131314;
+            color: white;
+            box-sizing: border-box;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--gemini-blue);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        /* 内部系统样式 */
+        #familySystem {
+            display: none;
+            padding: 60px 20px;
+        }
+
+        /* 右上角双语登出按钮 */
+        .top-nav {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: #8ab4f8;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(234, 67, 53, 0.2);
+            border-color: #f28b82;
+            color: #f28b82;
+        }
+
+        /* 家族树布局 (像图片一样) */
+        .tree-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+        }
+
+        .tree-level {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-bottom: 80px;
+            position: relative;
+        }
+
+        /* 成员卡片 (模仿 Geni 风格) */
         .member-card {
             display: flex;
             align-items: center;
-            background: #e1f5fe; /* 图片同款浅蓝 */
-            border: 1px solid #0277bd;
-            border-radius: 6px;
-            padding: 8px 12px;
-            width: 260px; /* 固定宽度，像图片一样 */
+            background: var(--card-blue);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 12px;
+            width: 280px;
             position: relative;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            color: #333;
             transition: 0.3s;
-            cursor: pointer;
         }
-        .member-card:hover { transform: scale(1.03); box-shadow: 4px 4px 10px rgba(0,0,0,0.15); }
 
-        /* 左侧头像区域 */
+        .member-card:hover { transform: translateY(-5px); }
+
         .avatar {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             background: #bdbdbd;
-            border-radius: 3px;
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            color: white;
-            border: 2px solid #81d4fa;
+            font-size: 30px;
+            border: 2px solid #fff;
         }
 
-        /* 右侧信息区域 */
-        .member-info { flex: 1; margin-left: 10px; text-align: left; }
-        .name { font-weight: bold; font-size: 15px; color: #1e3a8a; }
-        .meta { font-size: 11px; color: #666; margin-top: 3px; }
-        .motto { font-size: 11px; color: #333; margin-top: 5px; font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 170px; }
+        .member-info {
+            margin-left: 15px;
+            text-align: left;
+            flex: 1;
+        }
 
-        /* 底部互动按钮 (模仿图片) */
-        .card-actions { font-size: 11px; color: #0277bd; position: absolute; bottom: 3px; right: 10px; }
+        .name { font-weight: bold; font-size: 16px; color: var(--text-dark); }
+        .meta { font-size: 12px; color: #555; margin-top: 4px; }
+        .job { font-size: 11px; color: #0277bd; margin-top: 4px; font-weight: 500; }
 
-        /* 黑色连接线逻辑 - 使用伪元素 (::after) 画横平竖直的线 */
-        .parent-level { position: relative; }
-        
-        /* 父母与子女之间的垂直主线 */
+        .card-actions {
+            position: absolute;
+            bottom: 5px;
+            right: 12px;
+            font-size: 10px;
+            color: #0277bd;
+        }
+
+        /* 连线设计 */
         .parent-level::after {
             content: '';
             position: absolute;
-            bottom: -60px; /* 连接下一层 */
+            bottom: -80px;
             left: 50%;
-            height: 60px;
             width: 2px;
-            background: #333;
+            height: 80px;
+            background: #555;
         }
 
-        /* 子女层的水平主线 */
-        .child-level { position: relative; margin-top: 60px; }
         .child-level::before {
             content: '';
             position: absolute;
-            top: -20px; /* 主线高度 */
-            left: 150px; /* 手动计算左侧起始点 (自己卡片的一半 + 间隔的一半) */
-            right: 150px; /* 手动计算右侧起始点 */
-            height: 2px;
-            background: #333;
-        }
-        
-        /* 每个人卡片到水平主线的垂直小线 */
-        .member-card::after {
-            content: '';
-            position: absolute;
-            top: -20px; /* 连接到水平主线 */
-            left: 50%;
-            height: 20px;
+            top: -40px;
             width: 2px;
-            background: #333;
+            height: 40px;
+            background: #555;
+            left: 50%;
         }
     </style>
 </head>
@@ -109,21 +207,24 @@
     <div id="loginSection" class="login-screen">
         <div class="login-card">
             <h1>ANG-FAMILY</h1>
-            <span class="ssl-tag">🔒 HTTPS 端到端加密连接 · 已就绪</span>
-            <input type="text" id="username" placeholder="成员姓名">
-            <input type="password" id="password" placeholder="访问密钥">
-            <button class="login-btn" onclick="login()">验证并解锁家族树</button>
-            <p id="errorMsg" style="color: #ff4d4d; font-size: 12px; margin-top: 15px;"></p>
+            <span class="ssl-tag">🔒 HTTPS Secure Connection</span>
+            <input type="text" id="username" placeholder="Name | 姓名">
+            <input type="password" id="password" placeholder="Key | 密钥">
+            <button class="login-btn" onclick="handleLogin()">Login | 进入系统</button>
+            <p id="error" style="color: #f28b82; font-size: 12px; margin-top: 15px;"></p>
         </div>
     </div>
 
-    <div id="familyTreeSection">
-        <div class="dashboard-header">
-            <h2 style="font-weight: 300;">你好，<span id="currentUser" style="color: #3b82f6;"></span></h2>
-            <div>
-                <span class="ssl-tag">🔒 连接安全 (HTTPS)</span>
-                <button onclick="location.reload()" style="background: none; border: 1px solid #ddd; padding: 5px 10px; border-radius: 5px; font-size: 11px; margin-left: 10px;">注销</button>
-            </div>
+    <div id="familySystem">
+        <div class="top-nav">
+            <button class="logout-btn" onclick="location.reload()">
+                <span>🚪</span> Logout | 退出系统
+            </button>
+        </div>
+
+        <div style="text-align: center;">
+            <h2 style="font-weight: 300;">Welcome, <span id="userDisp" style="color: #8ab4f8;"></span></h2>
+            <p style="font-size: 12px; color: #888;">Family Tree Database - 管理员: 佳骏</p>
         </div>
 
         <div class="tree-container">
@@ -131,57 +232,55 @@
                 <div class="member-card">
                     <div class="avatar">👨</div>
                     <div class="member-info">
-                        <div class="name">爸爸</div>
-                        <div class="meta">年龄: -- | 职业: 工程师</div>
-                        <div class="motto">“维护 Honor 与 Realme 设备安全监控中。”</div>
+                        <div class="name">爸爸 (Father)</div>
+                        <div class="meta">Age: -- | Status: Active</div>
+                        <div class="job">工程师 (Engineer)</div>
                     </div>
-                    <div class="card-actions">编辑 | 树 | 更多 ▾</div>
+                    <div class="card-actions">edit | tree | more ▾</div>
                 </div>
-                
                 <div class="member-card">
                     <div class="avatar">👩</div>
                     <div class="member-info">
-                        <div class="name">妈妈</div>
-                        <div class="meta">年龄: -- | 职业: 财务主管</div>
-                        <div class="motto">“重要日程与绿豆实验记录已同步。”</div>
+                        <div class="name">妈妈 (Mother)</div>
+                        <div class="meta">Age: -- | Status: Active</div>
+                        <div class="job">财务主管 (Finance)</div>
                     </div>
-                    <div class="card-actions">编辑 | 树 | 更多 ▾</div>
+                    <div class="card-actions">edit | tree | more ▾</div>
                 </div>
             </div>
 
             <div class="tree-level child-level">
-                <div class="member-card">
+                <div class="member-card" style="border: 2px solid #8ab4f8;">
                     <div class="avatar">👦</div>
                     <div class="member-info">
-                        <div class="name">佳骏 (管理员)</div>
-                        <div class="meta">年龄: -- | 职业: 5K班学生 / 系统管理员</div>
-                        <div class="motto">“负责 ANG-FAMILY 系统维护与 Minecraft 资料管理。”</div>
+                        <div class="name">佳骏 (JiaJun)</div>
+                        <div class="meta">Age: 11 | Grade: 5K</div>
+                        <div class="job">系统管理员 (Admin)</div>
                     </div>
-                    <div class="card-actions">编辑 | 树 | 更多 ▾</div>
+                    <div class="card-actions">edit | tree | more ▾</div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        function login() {
+        function handleLogin() {
             const u = document.getElementById('username').value.trim();
             const p = document.getElementById('password').value;
-            const err = document.getElementById('errorMsg');
             
-            // 全家人的独立账号和密码（请自行修改秘密数字）
-            const accounts = {
+            // --- 密码管理区 (佳骏可以在这里修改) ---
+            const db = {
                 "佳骏": "0526",
                 "爸爸": "8888",
                 "妈妈": "1234"
             };
 
-            if (accounts[u] && accounts[u] === p) {
+            if (db[u] && db[u] === p) {
                 document.getElementById('loginSection').style.display = 'none';
-                document.getElementById('familyTreeSection').style.display = 'block';
-                document.getElementById('currentUser').innerText = u + " (洪家人)";
+                document.getElementById('familySystem').style.display = 'block';
+                document.getElementById('userDisp').innerText = u;
             } else {
-                err.innerText = "❌ 身份验证失败，请核对姓名或密码。";
+                document.getElementById('error').innerText = "❌ Verification Failed / 验证失败";
             }
         }
     </script>
