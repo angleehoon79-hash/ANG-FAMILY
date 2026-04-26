@@ -3,59 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANG-FAMILY | 洪家加密系统</title>
+    <title>ANG-FAMILY | 家族树系统</title>
     <style>
-        :root { --primary: #00d2ff; --secondary: #3a7bd5; --dark: #0f172a; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--dark); color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; overflow: hidden; }
-        .container { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(15px); padding: 40px; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.1); width: 100%; max-width: 360px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
-        h1 { font-size: 32px; letter-spacing: 2px; background: linear-gradient(to right, #00d2ff, #92fe9d); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 5px; }
-        .ssl-tag { font-size: 10px; color: #4ade80; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 25px; display: block; }
-        input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(15, 23, 42, 0.6); color: white; box-sizing: border-box; transition: 0.3s; }
-        input:focus { border-color: var(--primary); background: rgba(15, 23, 42, 0.9); outline: none; }
-        button { width: 100%; padding: 14px; background: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; margin-top: 15px; box-shadow: 0 4px 15px rgba(58, 123, 213, 0.4); }
-        button:hover { opacity: 0.9; transform: translateY(-1px); }
-        #dashboard { display: none; }
-        .info-panel { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; margin-top: 20px; text-align: left; border-left: 4px solid var(--primary); }
+        :root { --gemini-blue: #4285f4; --gemini-purple: #9b72cb; --bg: #0b0d0f; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        
+        /* 登录页面 */
+        .login-screen { margin-top: 100px; text-align: center; width: 320px; }
+        .login-card { background: #1e1f20; padding: 30px; border-radius: 28px; border: 1px solid #3c4043; }
+        h1 { background: linear-gradient(135deg, #4285f4, #9b72cb, #d96570); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 32px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #3c4043; background: #131314; color: white; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #1e1f20; color: #8ab4f8; border: 1px solid #3c4043; border-radius: 50px; cursor: pointer; font-weight: bold; }
+
+        /* 家谱视图 (Family Tree) */
+        #familyTree { display: none; padding: 40px; text-align: center; width: 100%; }
+        .tree-container { display: flex; flex-direction: column; align-items: center; position: relative; }
+        .tree-level { display: flex; justify-content: center; gap: 40px; margin-top: 50px; }
+        
+        .member-node { 
+            width: 100px; text-align: center; cursor: pointer; transition: 0.3s;
+        }
+        .avatar { 
+            width: 70px; height: 70px; background: #3c4043; border-radius: 50%; margin: 0 auto 10px; 
+            border: 3px solid transparent; background-clip: padding-box;
+            display: flex; align-items: center; justify-content: center; font-size: 24px;
+        }
+        .member-node:hover .avatar { border: 3px solid var(--gemini-blue); box-shadow: 0 0 15px var(--gemini-blue); }
+        .member-name { font-size: 14px; font-weight: 500; }
+
+        /* 详情弹窗 */
+        #detailPanel { display: none; background: #1e1f20; border-radius: 20px; padding: 20px; margin-top: 30px; border: 1px solid #8ab4f8; width: 80%; max-width: 400px; }
+        .status-tag { font-size: 10px; color: #4ade80; border: 1px solid #4ade80; padding: 2px 6px; border-radius: 5px; }
     </style>
 </head>
 <body>
 
-    <div class="container" id="loginBox">
+    <div id="loginSection" class="login-screen">
         <h1>ANG-FAMILY</h1>
-        <span class="ssl-tag">🔒 端到端 HTTPS 加密已就绪</span>
-        <input type="text" id="username" placeholder="请输入成员姓名">
-        <input type="password" id="password" placeholder="请输入安全密钥">
-        <button onclick="checkAuth()">安全进入系统</button>
-        <p id="error" style="color: #fb7185; font-size: 13px; margin-top: 15px; height: 10px;"></p>
+        <div class="login-card">
+            <span style="font-size: 10px; color: #8ab4f8;">🔒 HTTPS 身份验证已激活</span>
+            <input type="text" id="username" placeholder="成员姓名">
+            <input type="password" id="password" placeholder="访问密钥">
+            <button onclick="login()">进入家族树</button>
+        </div>
     </div>
 
-    <div class="container" id="dashboard">
-        <h2 id="userTitle" style="color: #4ade80;"></h2>
-        <div class="info-panel" id="userData"></div>
-        <button onclick="location.reload()" style="background: #334155; margin-top: 30px;">锁定系统并退出</button>
+    <div id="familyTree">
+        <h2 style="font-weight: 300;">你好，管理员 <span id="currentUser"></span></h2>
+        <div class="status-tag">连接状态：安全 (HTTPS)</div>
+
+        <div class="tree-container">
+            <div class="tree-level">
+                <div class="member-node" onclick="showInfo('爸爸')">
+                    <div class="avatar">👨</div>
+                    <div class="member-name">爸爸</div>
+                </div>
+                <div class="member-node" onclick="showInfo('妈妈')">
+                    <div class="avatar">👩</div>
+                    <div class="member-name">妈妈</div>
+                </div>
+            </div>
+
+            <div class="tree-level">
+                <div class="member-node" onclick="showInfo('佳骏')">
+                    <div class="avatar" style="border: 2px solid #8ab4f8;">👦</div>
+                    <div class="member-name">佳骏</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="detailPanel">
+            <h3 id="panelName"></h3>
+            <p id="panelData" style="font-size: 14px; color: #ccc;"></p>
+        </div>
+        
+        <button onclick="location.reload()" style="width: auto; margin-top: 30px; font-size: 12px;">注销</button>
     </div>
 
     <script>
-        function checkAuth() {
+        const familyData = {
+            "佳骏": "🏆 5K 班管理员。当前任务：维护 ANG-FAMILY 网站、整理 Minecraft 竞赛资料。",
+            "爸爸": "📱 技术顾问。负责 Honor/Realme 设备安全维护，家庭网络防火墙管理。",
+            "妈妈": "🏠 生活总管。管理家庭重要日程与绿豆实验每日观察记录。"
+        };
+
+        function login() {
             const u = document.getElementById('username').value.trim();
             const p = document.getElementById('password').value;
-            const err = document.getElementById('error');
-
-            // 洪家成员数据库
-            const db = {
-                "佳骏": { key: "0526", data: "🛠️ 管理员权限已激活。<br>· 5K 班课表已同步。<br>· Minecraft 教育版竞赛地图备份成功。" },
-                "爸爸": { key: "8888", data: "📱 欢迎。家中的 Honor/Realme 设备连接正常。<br>· 网络安全防火墙：运行中。<br>· 智能家居状态：在线。" },
-                "妈妈": { key: "1234", data: "🏠 欢迎。今日家庭提醒：<br>· 绿豆发芽实验记录已保存。<br>· RBT 太阳能灯项目耗材已备齐。" }
-            };
-
-            if (db[u] && db[u].key === p) {
-                document.getElementById('loginBox').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'block';
-                document.getElementById('userTitle').innerText = "你好，" + u;
-                document.getElementById('userData').innerHTML = db[u].data;
+            
+            // 简单验证：佳骏的密码是 0526
+            if (u === "佳骏" && p === "0526") {
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('familyTree').style.display = 'block';
+                document.getElementById('currentUser').innerText = u;
             } else {
-                err.innerText = "⚠️ 身份识别错误";
+                alert("请输入正确的佳骏账号和密码来解锁家族树。");
             }
+        }
+
+        function showInfo(name) {
+            document.getElementById('detailPanel').style.display = 'block';
+            document.getElementById('panelName').innerText = name + " 的个人档案";
+            document.getElementById('panelData').innerText = familyData[name];
         }
     </script>
 </body>
